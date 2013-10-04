@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="1075077021">
+    <data-source source="LOCAL" name="Rails Sheavenanapa: development" product="" version="" jdbc-version="" driver-name="" driver-version="" uuid="ae9e4b80-9294-4ef4-b481-154653a43347">
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Sites\Sheavenanapa\db\development.sqlite3</jdbc-url>
+      <libraries>
+        <library>
+          <url>file://$USER_HOME$/.RubyMine50/config/jdbc-drivers/xerial-sqlite-license.txt</url>
+        </library>
+        <library>
+          <url>jar://$USER_HOME$/.RubyMine50/config/jdbc-drivers/sqlite-jdbc-3.7.2.jar!/</url>
+        </library>
+      </libraries>
+    </data-source>
+  </component>
+</project>
+

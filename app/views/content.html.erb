@@ -1,0 +1,33 @@
+<div id="grid">
+	<table id="categories">
+		<tr>
+			<th data-field="Title">Title</th>
+			<th data-field="Description">Description</th>
+		</tr>
+	</table>
+</div>
+
+
+
+
+
+<script>
+makeSplitter();
+
+$(function(){
+dataSource = new kendo.data.dataSource({
+	transport: {
+		read: {
+			url: "/category.json"
+		}
+	}
+});	
+
+$("#categories").kendoGrid({
+	dataSource: dataSource
+});
+
+})
+
+
+</script>

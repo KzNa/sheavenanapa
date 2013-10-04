@@ -1,0 +1,8 @@
+ru:
+  activerecord:
+    
+    attributes:
+      category:
+        title: 
+          "parent": "Отец"
+      # will translate User attribute "login" as "Handle"

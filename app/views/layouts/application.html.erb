@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sheavenanapa</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<div id="page">
+  
+
+<div id="header">
+<div id="bg">  
+    <marquee width="380" height="30" 
+       direction="left" scrollamount="7" style="text-align: center; font-size: 25px; margin-top: 15px; margin-left: 10px; color: red">
+       Телефон: +79181236548695
+    </marquee>  
+     <img id='setka' src='/system/images/setka.png'>
+
+   </div> 
+</div>
+ <div id="main">
+    <div id="left-panel">
+        <div id="services"> Услуги </div>
+    	<%= yield %>
+
+    </div>
+    <div id="tabstrip"> 
+
+        <div id="price"></div>
+
+        <div id="portfolio"></div>
+
+        <div id="contacts"></div>
+    </div>
+    
+    <div id="content"></div>
+ </div>
+  <div id="footer"></div>
+
+
+
+
+
+
+</div>
+
+
+
+</body>
+</html>
