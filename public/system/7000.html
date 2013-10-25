@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>The page you were looking for doesn't exist (404)</title>
+ 
+</head>
+
+<body>
+    <div class="demo-section3">
+        <div id="listView3"></div>
+        <div id="pager3" class="k-pager-wrap3"></div>
+    
+
+    <script type="text/x-kendo-template" id="template3">
+        <div class="product3">
+
+        <a href="http://cs7003.vk.me/c7005/v7005215/a3d9/XvT2n1AgewE.jpg" class="highslide" onclick="return hs.expand(this)">
+    <img src="http://demos.kendoui.com/content/web/foods/#= ProductID #.jpg" alt="Highslide JS"
+        title="Click to enlarge" /></a>
+
+          
+          
+
+           <h4>#:ProductName#</h4>
+            
+        </div>
+    </script>
+
+    <script>
+        $(function() {
+            var dataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "http://demos.kendoui.com/service/Products",
+                        dataType: "jsonp"
+                    }
+                },
+                pageSize:4
+            });
+
+            $("#pager3").kendoPager({
+                dataSource: dataSource
+            });
+
+            $("#listView3").kendoListView({
+                dataSource: dataSource,
+                height: "500px",
+                template: kendo.template($("#template3").html())
+            });
+        });
+    </script>
+
+    <style scoped>
+        .demo-section3 {
+            padding: 0px;
+            width: 577px;
+        }
+        #listView3 {
+	    padding: 10px;
+		margin-bottom: -1px;
+		min-width: 562px;
+		min-height: 388px;
+        }
+        .product3 {
+            float: left;
+            position: relative;
+            width: 111px;
+            height: 170px;
+            margin: 0;
+            padding: 0;
+        }
+        .product3 img {
+        		cursor: pointer;
+            width: 110px;
+            height: 110px;
+        }
+        .product3 h4 {
+
+            margin: 0;
+            padding: 3px 5px 0 0;
+            max-width: 96px;
+            overflow: hidden;
+            line-height: 1.1em;
+            font-size: 10px;
+            font-weight: normal;
+            text-transform: uppercase;
+            color: #999;
+        }
+        .product3 p {
+            visibility: hidden;
+        }
+        .product3:hover p {
+            visibility: visible;
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            top: 0;
+            margin: 0;
+            padding: 0;
+            line-height: 110px;
+            vertical-align: middle;
+            text-align: center;
+            color: #fff;
+            background-color: rgba(0,0,0,0.75);
+            transition: background .2s linear, color .2s linear;
+            -moz-transition: background .2s linear, color .2s linear;
+            -webkit-transition: background .2s linear, color .2s linear;
+            -o-transition: background .2s linear, color .2s linear;
+        }
+        .k-listview3:after {
+            content: ".";
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
+    </style>
+
+    <script>
+     $(function(){
+     	$('.k-pager-info').hide();
+     });
+    	
+    </script>
+</body>
+</html>

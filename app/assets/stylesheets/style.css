@@ -4,29 +4,103 @@ html {
     
     font-family: Tahoma;
     font-size: 22px;
+    margin: 0;
+    padding: 0;
 }
- 
-#setka{
-    right: 220px;
-position: absolute;
-top: 46px;
+.k-content{
+    width: 606px;
+height: 437px;
 }
+
+.dsfsdf{
+     background-image: linear-gradient(bottom, rgb(250,18,227) 6%, rgb(142,209,245) 53%);
+background-image: -o-linear-gradient(bottom, rgb(250,18,227) 6%, rgb(142,209,245) 53%);
+background-image: -moz-linear-gradient(bottom, rgb(250,18,227) 6%, rgb(142,209,245) 53%);
+background-image: -webkit-linear-gradient(bottom, rgb(250,18,227) 6%, rgb(142,209,245) 53%);
+background-image: -ms-linear-gradient(bottom, rgb(250,18,227) 6%, rgb(142,209,245) 53%);
+
+background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.06, rgb(250,18,227)),
+    color-stop(0.53, rgb(142,209,245))
+);
+}
+
+
+.string{
+
+   cursor: pointer;
+   width: 643px; 
+   margin: 12px 4px;
+   padding: 6px;
+   height:30px;
+}
+.first:hover{
+    color: rgb(255, 255, 255);
+    
+    background-color: rgb(231, 120, 23);
+}
+
+.second:hover{
+    color: rgb(255, 255, 255);
+    
+    background-color: rgb(152, 196, 25);
+}
+
+.third:hover{
+   color: rgb(255, 255, 255);
+    
+    background-color:  rgb(195, 25, 114); 
+}
+.fourth:hover{
+   color: rgb(255, 255, 255);
+    
+    background-color:  rgb(0, 192, 240); 
+}
+.fifth:hover{
+   color: rgb(255, 255, 255);
+    
+    background-color:  rgb(221, 59, 27) ; 
+}
+.sixth:hover{
+   color: rgb(255, 255, 255);
+    
+    background-color:  rgb(95, 58, 116) ; 
+}
+
+#karta{
+    padding:13px;
+}
+#contacty{
+    font-size: 12px;
+    position: absolute;
+    margin-left: 298px;
+    margin-top: 39px;
+    
+    width: 334px;
+    height: 142px;
+}
+ .textred{
+    color:rgb(255, 0, 71);
+ }
 #bg{
     background: url('/system/images/korob.png') no-repeat;
-    width:400px;
-    height: 60px;
-    margin-top: 41px;
+width: 515px;
+height: 60px;
+margin-top: 67px;
 float: right;
-margin-right: 21px;
+margin-right: 15px;
 }
 
 body{
     width: 100%;
     height: 100%;
-
-    font-family: Tahoma;
+margin: 0;
     padding: 0;
-    margin: 0;
+    font-family: Tahoma;
+  
 }
 
 #main{
@@ -39,10 +113,30 @@ body{
     width:960px;
     margin: 0 auto;
 }
+#logotip{
 
+    position: absolute;
+margin-left: 121px;
+top: 19px;
+}
+#sh{
+    font-size: 33px;
+color: rgb(144, 30, 120);
+font-family: serif;
+}
+#mn{
+    font-family: cursive;
+color: rgb(40, 22, 111);
+font-size: 13px;
+}
+#tel{
+    font-size: 24px;
+color: rgb(144, 30, 120);
+font-family: serif;
+}
 #header{
     width:960px;
-    height: 140px;
+    height: 162px;
     background: url('/system/images/header.png') no-repeat;
 }
 
@@ -50,26 +144,34 @@ body{
     width: 67px;
 height: 27px;
 margin-left: 99px;
-margin-top: 3px;
+margin-top: 1px;
 }
 
 #left-panel {
 
-    background: url('/system/images/left-panel.png') no-repeat;
+    background: url('/system/images/left-panel.png') repeat-y;
+   
     width: 269px;
     float: left;
-    height: 569px;
+    
      color:white;
 
 }
 
 #price{
+
+    cursor: pointer;
+    color:white;
+    text-align: center;
     float:left;
     height:50px;
     width:221px;
     background: url('/system/images/button-yellow.png') no-repeat;
 }
 #contacts{
+    cursor: pointer;
+    color:white;
+    text-align: center;
     float: left;
     height:50px;
     width:221px;
@@ -77,27 +179,41 @@ margin-top: 3px;
 }
 
 #portfolio{
+    cursor: pointer;
+    color:white;
+    text-align: center;
     float: left;
     height:50px;
     width:221px;
     background: url('/system/images/button-green.png') no-repeat;
 }
-
+#blue{
+    z-index: -100;
+margin-left: 14px;
+top: 368px;
+position: absolute;
+width: 269px;
+height: 363px;
+background-color: rgb(59, 179, 194);
+}
 #treeview{
+    font-size: 16px;
     color:white;
     margin-top: 24px;
 }
 
 #content{
-    background:url('/system/images/border-yellow.png') no-repeat;
+    background:url('/system/images/border-red.png') no-repeat;
     float: right;
     width: 663px;
     height: 519px;
 }
 
 #tabstrip{
-    height: 50px;
-    width: 663px;
+    margin-right: 4px;
+    margin-top: 4px;
+    height: 58px;
+    width: 653px;
     float: right;
     background-color: black;
 }

@@ -1,50 +1,270 @@
-<div id="treeview" class="demo-section"></div>
+<script type="text/x-kendo-template" id="layout-template">
+<div id="contents"> </div>
+</script>
 
 
-        
-           
-
-            <script>
-                homogeneous = new kendo.data.HierarchicalDataSource({
-
-                        transport: {
-                            read: {
-                                url: "/categories.json",
-                                dataType: "json"
-                            }
-                        },
-                        schema: {
-                            model: {
-                                id: "id",
-                                hasChildren: "haschild"
-                                    }
-                                }
-
-                         });
+<script type="text/x-kendo-template" id="price-template">
+ <div class='string first'>Наружная реклама</div>
+ <div class='string second'>Широкоформатная и интерьереная печать</div>
+ <div class='string third'>Реклама на авто</div>
+ <div class='string fourth'>Полиграфия</div>
+ <div class='string fifth'>Создание и продвижение сайтов</div>
+ <div class='string sixth'>Дизайн</div>
+</script>
 
 
+<script type="text/x-kendo-template" id="main-template">
+<h3> Главная Страница на стадии наполнения  </h3>
+</script>
+ 
 
-                $("#treeview").kendoTreeView({
-                  
-                    dataSource: homogeneous,
-                    dataTextField: "title"
-                });
 
-            </script>
+<script type="text/x-kendo-template" id="portfolio-template">
+  <div id="tabstrip">
+            <ul>
+                <li class="k-state-active">Наружная</li>
+                <li>Не наружная</li>
+                <li>ываыва</li>
+            </ul>
+        </div>
 
-            <style scoped>
-                #example {
-                    text-align: center;
-                }
+</script>
 
-                .demo-section {
-                    display: inline-block;
-                    vertical-align: top;
-                    width: 320px;
-                    height: 300px;
-                    text-align: left;
-                    margin: 0 2em;
-                }
-            </style>
+
+<script type="text/x-kendo-template" id="outdoorAdvertising-template">
+  <div id="window-contacts" class='window' data-role="window" data-close="mApplication.window.close" data-open="mApplication.window.open" data-title="Наружная реклама" data-modal="true" data-width="750px" data-height="500px" data-type=""><h1> NULL</h1></div>
+</script>
+
+
+<script type="text/x-kendo-template" id="missing-template">
+  <p> Страница находится на стадии наполнения </p>
+</script>
+
+
+
+
+
+
+<script type="text/x-kendo-template" id="contacts-template">
+<div id="contacty"><b><span class='textred'>Адрес:</span> ст.Анапская ул. Мира/Полевая, 2д.<br> 
+
+<span class='textred'>Магазин</span> "Камелот" 2 этаж<br><br> 
+
+<b><span class='textred'>Телефон:</span> +7(918)4-876-555<br>
+
+<span class='textred'><b>e-mail:<span> 7heavenanapa@mail.ru - Директор<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       7heavenanapa_manager@mail.ru - Менеджер<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7heavenanapa_design@mail.ru - Дизайнер<br><br> 
+
+<b><span class='textred'>Мы в ВКОНТАКТЕ:</span>  <a href="http://vk.com/7heavenanapa" target="_blank">http://vk.com/7heavenanapa</a> </div>
+   <p>  <a href="http://maps.yandex.ru/?um=OcGwVgRYDdNmT2VqaOHRDyUP3eq19Q9w&l=map"  target="_blank"><img id="karta" src="system/images/karta.png" alt="Схема проезда"> </a> </p>
+</script>
+
+<script type="text/x-kendo-template" id="category-fake-template"> 
+    <h1>Всем привет</h1>
+  #= title #  #= description #
+</script>
+
+<script type="text/x-kendo-template" id="category-content-template"> 
+  <div id="category-content"></div>
+</script>
+
+<script>
+
+
+
+  function onSelect (e) {
+   var dataItem = this.dataItem(e.node);
+
+   if (dataItem.haschild == false) {
+var categoryTemplate = kendo.template($("#category-fake-template").html());
+  
+   var scriptData = { title: dataItem.title, description:  dataItem.description };
+    $("#category-content").html(categoryTemplate(scriptData));
+   
+      app.navigate("category/"+dataItem.id); 
+
+ // var encodingTemplate = kendo.template("HTML tags are encoded like this - ${ html }");
+// var encodingData = { html: "<strong>lorem ipsum</strong>" };
+// $("#encoding").html(encodingTemplate(encodingData));
+     //app.navigate("category/missing");
+
+   }
+
+
+}
+
+
+  // bind click
+$("#price").bind('click', function(){
+  
+  app.navigate("service/prices");
+});
+
+
+$("#portfolio").bind('click', function(){
+   
+    app.navigate("portfolio");
+});
+
+$("#contacts").bind('click', function(){
+  
+    app.navigate("service/contacts");
+});
+ //end bind click
+
+//datasource
+
+//model
+
+var mApplication = kendo.observable({
+  window:{
+    windows:[],
+    open: function(){
+      mApplication.window.windows.push(this.element[0]);
+    },
+    close: function(){
+      var that = this;
+      mApplication.window.windows = jQuery.grep(mApplication.window.windows, function(value){
+        return value != that.element[0]
+      });
+      if (!$(that.element[0]).data("noBack")){
+        history.back();
+      }else{
+        $(that.element[0]).data("noBack", false);
+      }
+    },
+    closeAll: function(){
+      while(mApplication.window.windows.length>0){
+        var wnd = mApplication.window.windows[mApplication.window.windows.length-1];
+          $(wnd).data("noBack", true);
+          $(wnd).data("kendoWindow").close();
+      }
+    }
+  }
+});
+
+/* 
+
+*/ 
+//view
+var crud = new kendo.Layout("crud-template", {model: mApplication});
+var outdoorAdvertising = new kendo.Layout("outdoorAdvertising-template", {model: mApplication});
+var layoutView = new kendo.Layout("layout-template");
+var price = new kendo.Layout("price-template");
+var portfolio = new kendo.Layout("portfolio-template");
+var contacts = new kendo.Layout("contacts-template");
+var main = new kendo.Layout("main-template");
+var missing = new kendo.Layout("missing-template");
+var categoryContent = new kendo.Layout("category-content-template");
+
+//end view
+
+//router
+var app = new kendo.Router({
+  init: function () {
+    layoutView.render("#content");
+  },
+
+  change: function(){
+ 
+  $("#treeview span").removeClass('k-state-selected');
+  
+ } 
+});
+
+app.route("/", function (){
+  mApplication.window.closeAll();
+
+
+
+  layoutView.showIn("#contents", main);
+});
+
+app.route("service/prices", function (){
+  mApplication.window.closeAll();
+  $('#content').css({'background' : "url('/system/images/border-yellow.png') no-repeat" });
+
+  layoutView.showIn("#contents", price);
+  $(".first").bind('click', function(){
+   app.navigate("outdooradvertising");
+  });
+  $(".second").bind('click', function(){
+   app.navigate("crud");
+  });
+});
+
+app.route("outdooradvertising", function (){
+  mApplication.window.closeAll();
+
+  layoutView.showIn("#window", outdoorAdvertising);
+  $("#window-contacts").data("kendoWindow").center().open();
+  
+  $("#window-contacts").data("kendoWindow").bind("close",function(e){
+        e.sender.unbind("close",arguments.callee);
+  });
+});
+
+app.route("crud", function (){
+  mApplication.window.closeAll();
+
+  layoutView.showIn("#window", crud);
+  $("#window-crud").data("kendoWindow").center().open();
+  
+  $("#window-crud").data("kendoWindow").bind("close",function(e){
+        e.sender.unbind("close",arguments.callee);
+  });
+});
+
+
+
+app.route("category/missing", function (){
+  mApplication.window.closeAll();
+  $('#content').css({'background' : "url('/system/images/border-green.png') no-repeat" });
+    layoutView.showIn("#contents", missing);
+});
+
+app.route("category/:id", function(id) {
+   mApplication.window.closeAll();
+   
+
+
+
+layoutView.showIn("#contents", categoryContent);
+
+});
+
+
+app.route("portfolio", function (){
+  mApplication.window.closeAll();
+  $('#content').css({'background' : "url('/system/images/border-green.png') no-repeat" });
+    layoutView.showIn("#contents", portfolio);
+
+     $(document).ready(function () {
+        $("#tabstrip").kendoTabStrip({
+            animation: { open: { effects: "fadeIn"} },
+            contentUrls: [
+                        'system/5000.html',
+                        'system/6000.html',
+                        'system/7000.html'
+                    ]
+        });
+    });
+});
+
+app.route("service/contacts", function (){
+  mApplication.window.closeAll();
+  $('#content').css({'background' : "url('/system/images/border-fiolet.png') no-repeat" });
+    layoutView.showIn("#contents", contacts);
+});
+// end router
+
+//start application
+
+ $(function(){
+    app.start();
+  });
+</script>
 
 

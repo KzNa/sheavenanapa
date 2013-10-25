@@ -1,4 +1,4 @@
-class CategoriesController < ApplicationController
+ class CategoriesController < ApplicationController
 def index
 	id = params[:id]
 	@category = Category.where(:parent_id => id)
@@ -16,7 +16,15 @@ def index
 	 end
 	end
 	   
-    
+  def create
+  	@createcategory = Category.create(params[:category])
+  	
+  end
+
+  def new
+  	
+  end
+
 end
 
 	

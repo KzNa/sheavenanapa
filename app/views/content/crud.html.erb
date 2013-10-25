@@ -1,0 +1,65 @@
+<h3> Создание категории </h3>
+
+<dl>
+      <dt> Name: </dt>
+      <dd><input type="text" id="create-title"></dd>
+      <dt> Description: </dt>
+      <dd><textarea rows="5" cols="20" id="create-description"></textarea></dd>
+      <dd><button id="create-category">Create</dd>
+ </dl>
+
+
+ <div id="grid">
+ 	<table id="categories">
+ 		<tr>
+ 			<th data-field="title"> Title</th>
+ 			<th data-field="description"> Description</th>
+ 		</tr>	
+ 	</table>	
+ </div>
+
+ <script>
+
+
+var Category = kendo.data.Model.define({
+	id: "id"
+});
+var dataSource = new kendo.data.DataSource({
+		transport: {
+			read: {
+				url: "/categories.json",
+				dataType: "json"
+
+			},
+			create: {
+				url: "/categories/create.json",
+				type: "POST"
+
+			}
+
+		},
+		schema: {
+			model: Category
+		}
+
+}) 
+
+$("#categories").kendoGrid({
+	dataSource: dataSource
+});
+
+$("#create-category").click(function(){
+	dataSource.add({
+		title: $("#create-title").val(),
+		description: $("#create-description").val()
+
+	});
+	dataSource.sync();
+	dataSource.read();
+});
+
+
+
+
+
+ </script>

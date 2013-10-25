@@ -7,46 +7,84 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <script>
+    hs.graphicsDir = 'system/graphics/';
+    hs.wrapperClassName = 'wide-border';
+</script>
+
 <div id="page">
-  
+  <div id="blue"></div>
 
 <div id="header">
+
+
 <div id="bg">  
-    <marquee width="380" height="30" 
+    <marquee width="497" height="30" 
        direction="left" scrollamount="7" style="text-align: center; font-size: 25px; margin-top: 15px; margin-left: 10px; color: red">
-       Телефон: +79181236548695
+       Бегущая строка
     </marquee>  
-     <img id='setka' src='/system/images/setka.png'>
+     
 
    </div> 
 </div>
  <div id="main">
     <div id="left-panel">
         <div id="services"> Услуги </div>
-    	<%= yield %>
-
+    	
+<div id="treeview" class="demo-section">
+    
+</div>
     </div>
-    <div id="tabstrip"> 
+    <div id="menu"> 
 
-        <div id="price"></div>
+        <div id="price"> Цены</div>
 
-        <div id="portfolio"></div>
+        <div id="portfolio">Портфолио</div>
 
-        <div id="contacts"></div>
+        <div id="contacts">Контакты</div>
     </div>
     
-    <div id="content"></div>
+    <div id="content">
+        <%= yield %>
+    </div>
  </div>
   <div id="footer"></div>
-
-
-
+  <div id="window"></div>
 
 
 
 </div>
 
+            <script>
+                homogeneous = new kendo.data.HierarchicalDataSource({
 
+                        transport: {
+                            read: {
+                                url: "/categories.json",
+                                dataType: "json"
+                                  },
+                                
+                                },
+                        schema: {
+                            model: {
+                                id: "id",
+                                hasChildren: "haschild"
+                                    }
+                                }
+
+                         });
+
+
+
+           var treeview = $("#treeview").kendoTreeView({
+                   
+                    select: onSelect,
+                    dataSource: homogeneous,
+                    dataTextField: "title",
+                    
+                   
+                });
+            </script>
 
 </body>
 </html>
