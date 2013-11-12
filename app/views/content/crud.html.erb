@@ -1,65 +1,210 @@
-<h3> Создание категории </h3>
+<div id="grid">
+  <table id="categories">
+    <tr>
+        
+      <th data-field="title"> Название </th>
+       <th data-field="id"> АЙДИ </th>
+
+    </tr>
+  </table>
+
+</div>
+
+<div id="left">
+<p> Создание категории </p>
 
 <dl>
-      <dt> Name: </dt>
+      <dt> Название категории: </dt>
       <dd><input type="text" id="create-title"></dd>
-      <dt> Description: </dt>
+      <dt> ID родителя: </dt>
+      <dd><input type="text" id="create-parentid"></dd>
+      <dt> Есть ли дочерние элементы?: </dt>
+      <dd><input type="text" id="haschild"></dd>
+      <dt> Описание категори: </dt>
       <dd><textarea rows="5" cols="20" id="create-description"></textarea></dd>
-      <dd><button id="create-category">Create</dd>
+
+      
+      
+      <dd><button id="create-category">Создать</dd>
  </dl>
+</div>
+<div id="right">
+<p> Редактирование </p>
+
+<dl>
+      <dt> Название категории: </dt>
+      <dd><input type="text" id="change-title"></dd>
+      <dt> ID родителя: </dt>
+      <dd><input type="text" id="change-parentid"></dd>
+      <dt> Есть ли дочерние элементы?: </dt>
+      <dd><input type="text" id="change-haschild"></dd>
+      <dt> Описание категори: </dt>
+      <dd><textarea rows="5" cols="20" id="change-description"></textarea></dd>
+
+      <input name="files" id="files" type="file" />
+
+      
+      <dd><button id="update-category">Обновить</dd>
+      <dd><button id="delete-category">Удалить</dd>
+ </dl>
+</div>
+
+<script>
+$(function(){
+
+  $('#footer').hide();
+
+$('#update-category').click(function(){
+  selectedCategory.set("title", $("#change-title").val());
+  selectedCategory.set("description", $("#change-description").val());
+  selectedCategory.set("parent_id", $("#change-parentid").val());
+  selectedCategory.set("haschild", $("#change-haschild").val());
 
 
- <div id="grid">
- 	<table id="categories">
- 		<tr>
- 			<th data-field="title"> Title</th>
- 			<th data-field="description"> Description</th>
- 		</tr>	
- 	</table>	
- </div>
-
- <script>
-
-
-var Category = kendo.data.Model.define({
-	id: "id"
-});
-var dataSource = new kendo.data.DataSource({
-		transport: {
-			read: {
-				url: "/categories.json",
-				dataType: "json"
-
-			},
-			create: {
-				url: "/categories/create.json",
-				type: "POST"
-
-			}
-
-		},
-		schema: {
-			model: Category
-		}
-
-}) 
-
-$("#categories").kendoGrid({
-	dataSource: dataSource
+dataSource.sync();
+dataSource.read(); 
 });
 
-$("#create-category").click(function(){
-	dataSource.add({
-		title: $("#create-title").val(),
-		description: $("#create-description").val()
+$('#delete-category').click(function(){
+  dataSource.remove(selectedCategory);
 
-	});
-	dataSource.sync();
-	dataSource.read();
+
+dataSource.sync();
+dataSource.read(); 
 });
 
 
 
+ $('#create-category').click(function(){
+                      dataSource.add({
+                      title: $("#create-title").val(),
+                      description: $("#create-description").val(),
+                      parent_id: $("#create-parentid").val(),
+                      haschild: $("#haschild").val()
+
+                     });
+                                dataSource.sync();
+                                dataSource.read();
+                      $("#create-description").val('');
+                      $("#create-title").val('');
+                      $("#create-parentid").val('')
+                      $("#haschild").val('');
+
+                  });
+ Mcategory = kendo.data.Model.define({
+  id: "id"
+});
+ var ids;
+ var selectedCategory;
+
+ dataSource = new kendo.data.DataSource({
+  transport: {
+    read: {
+      url: "/all.json"
+    },
+    create: {
+      url: "/categories.json",
+      type: "POST"
+    },
+    update: {
+      url: function(obj){
+      
+       return "/categories/"+obj.id+".json" 
+      }, 
+      
+      type: "PUT"
+    },
+    destroy: {
+      url: function(obj){
+        return "/categories/"+obj.id+".json"
+      },
+      dataType: "json",
+      type: "DELETE"
+    }
+  },
+  schema: {
+    model: Mcategory
+  }
+});
+ 
+var grid = $("#categories").kendoGrid({
+  dataSource: dataSource,
+  selectable: true,
+  change: function() {
+    ids = this.dataItem(this.select()).id;
+    
+    console.debug(ids);
+
+   
+    selectedCategory = this.dataSource.get(ids);
+    
+   $("#change-title").val(selectedCategory.get("title"));
+    $("#change-description").val(selectedCategory.get("description"));
+    $("#change-parentid").val(selectedCategory.get("parent_id"));
+    $("#change-haschild").val(selectedCategory.get("haschild"));
+  }
+  
 
 
- </script>
+});
+
+$('#create-description').kendoEditor()
+
+$('#grid').bind('click', function(){
+  var id = $('.k-state-selected').children().last().text();
+  var width = $('#files').width();
+
+  if (id > 0 && width < 4080){
+   var files =  $("#files").kendoUpload({
+     async: {
+              saveUrl: "/categories/"+id+"/images.json",
+              autoUpload: true
+            }
+  });
+  }
+
+  if (id>0 && width == 4080) {
+    $('.k-upload').replaceWith('<input name="files" id="files" type="file" />');
+
+ //$('#files').remove();
+
+ $("#files").kendoUpload({
+     async: {
+              saveUrl: "/categories/"+id+"/images.json"
+              
+            }
+  });
+
+  }
+  
+
+
+   
+});
+
+ 
+
+});
+
+</script>
+
+
+<style>
+#grid{
+  font-size: 11px;
+}
+
+#right{
+  font-size: 10px;
+float: right;
+}
+
+#left{
+  font-size: 10px;
+float: left;
+}
+
+
+
+
+</style>

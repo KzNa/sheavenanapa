@@ -56,15 +56,20 @@
 </div>
 
             <script>
-                homogeneous = new kendo.data.HierarchicalDataSource({
+                sCategory = new kendo.data.HierarchicalDataSource({
 
                         transport: {
                             read: {
                                 url: "/categories.json",
                                 dataType: "json"
                                   },
+                            create: {
+                              url: "/categories.json",
+                              type: "POST"
+
+                                    }
                                 
-                                },
+                        },
                         schema: {
                             model: {
                                 id: "id",
@@ -74,12 +79,13 @@
 
                          });
 
+                
 
 
            var treeview = $("#treeview").kendoTreeView({
                    
                     select: onSelect,
-                    dataSource: homogeneous,
+                    dataSource: sCategory,
                     dataTextField: "title",
                     
                    

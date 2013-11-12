@@ -62,34 +62,108 @@
 </script>
 
 <script type="text/x-kendo-template" id="category-fake-template"> 
-    <h1>Всем привет</h1>
-  #= title #  #= description #
+
+
+    
+  <div class="categoryclass">  #= name # </div> 
+  
+
+  <div id="carousel"></div>
+  <div id="pager2" class="k-pager-wrap"></div>
+
+  <div class="categoryclass2"> </div>
+
+
+
+
 </script>
+
+  <script type="text/x-kendo-template" id="templateimage">
+
+  
+    <a href="#= original #" class="highslide" onclick="return hs.expand(this)">
+    
+         <div class="demo-section-listview">
+         <div class="product">
+           
+       
+
+            <img src="#= thumb #" alt="#: title # image" />
+            <h4>#:title#</h4>
+            
+        </div>
+        </div>
+    </script>
 
 <script type="text/x-kendo-template" id="category-content-template"> 
   <div id="category-content"></div>
 </script>
 
+<script type="text/x-kendo-template" id="crud-template"> 
+<h3> Создание категории </h3>
+
+<dl>
+      <dt> Название категории: </dt>
+      <dd><input type="text" id="create-title"></dd>
+
+<dt> Вступительная часть: </dt>
+      <dd><input type="text" id="create-name"></dd>
+
+      <dt> ID родителя: </dt>
+      <dd><input type="text" id="create-parentid"></dd>
+      <dt> Есть ли дочерние элементы?: </dt>
+      <dd><input type="text" id="haschild"></dd>
+      <dt> Описание категори: </dt>
+      <dd><textarea rows="5" cols="20" id="create-description"></textarea></dd>
+
+   
+      
+      <dd><button id="create-category">Create</dd>
+ </dl>
+
+</script>
+
+
+
 <script>
-
-
-
   function onSelect (e) {
    var dataItem = this.dataItem(e.node);
 
    if (dataItem.haschild == false) {
-var categoryTemplate = kendo.template($("#category-fake-template").html());
-  
-   var scriptData = { title: dataItem.title, description:  dataItem.description };
-    $("#category-content").html(categoryTemplate(scriptData));
-   
-      app.navigate("category/"+dataItem.id); 
+       
+       var categoryTemplate = kendo.template($("#category-fake-template").html());
+      
+       var scriptData = { title: dataItem.title, name: dataItem.name, description:  dataItem.description, id: dataItem.id };
 
- // var encodingTemplate = kendo.template("HTML tags are encoded like this - ${ html }");
-// var encodingData = { html: "<strong>lorem ipsum</strong>" };
-// $("#encoding").html(encodingTemplate(encodingData));
-     //app.navigate("category/missing");
+       console.debug(scriptData.description);
 
+        $(".categoryclass2").html("<h1> sdfsd </h1>");
+       
+       $("#category-content").html(categoryTemplate(scriptData));
+
+        var imageData = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "/categories/"+dataItem.id+"/images.json",
+                        dataType: "json"
+                    }
+                },
+                pageSize:5
+            });
+
+        $("#pager2").kendoPager({
+                dataSource: imageData
+            });
+
+            $("#carousel").kendoListView({
+                dataSource: imageData,
+                height: "200px",
+                template: kendo.template($("#templateimage").html())
+            });
+       $('.k-pager-info').hide();
+
+
+       app.navigate("category/"+dataItem.id); 
    }
 
 
@@ -97,6 +171,23 @@ var categoryTemplate = kendo.template($("#category-fake-template").html());
 
 
   // bind click
+ 
+  $(document).one('click', '#create-category', function(){
+                      sCategory.add({
+                        name: $("#create-name").val(),
+                        title: $("#create-title").val(),
+                        description: $("#create-description").val(),
+                        parent_id: $("#create-parentid").val(),
+                        haschild: $("#haschild").val()
+
+                     });
+                                sCategory.sync();
+                                sCategory.read();
+                  });
+
+
+
+
 $("#price").bind('click', function(){
   
   app.navigate("service/prices");
@@ -149,11 +240,11 @@ var mApplication = kendo.observable({
 
 */ 
 //view
-var crud = new kendo.Layout("crud-template", {model: mApplication});
+var crud = new kendo.Layout("crud-template");
 var outdoorAdvertising = new kendo.Layout("outdoorAdvertising-template", {model: mApplication});
 var layoutView = new kendo.Layout("layout-template");
 var price = new kendo.Layout("price-template");
-var portfolio = new kendo.Layout("portfolio-template");
+var portfolio = new kendo.Layout("missing-template");
 var contacts = new kendo.Layout("contacts-template");
 var main = new kendo.Layout("main-template");
 var missing = new kendo.Layout("missing-template");
@@ -162,6 +253,8 @@ var categoryContent = new kendo.Layout("category-content-template");
 //end view
 
 //router
+
+
 var app = new kendo.Router({
   init: function () {
     layoutView.render("#content");
@@ -170,13 +263,13 @@ var app = new kendo.Router({
   change: function(){
  
   $("#treeview span").removeClass('k-state-selected');
-  
+ 
  } 
 });
 
 app.route("/", function (){
   mApplication.window.closeAll();
-
+  //$('#content').css({'background' : "url('/system/images/border-red.png') no-repeat" });
 
 
   layoutView.showIn("#contents", main);
@@ -184,14 +277,17 @@ app.route("/", function (){
 
 app.route("service/prices", function (){
   mApplication.window.closeAll();
-  $('#content').css({'background' : "url('/system/images/border-yellow.png') no-repeat" });
+
+ // $('#content').css({'background' : "url('/system/images/border-yellow.png') no-repeat" });
+ // $('#blue').css({'height' : "188px" });
+ // $('#main').css({'height' : "395px" });
 
   layoutView.showIn("#contents", price);
   $(".first").bind('click', function(){
    app.navigate("outdooradvertising");
   });
   $(".second").bind('click', function(){
-   app.navigate("crud");
+   app.navigate("");
   });
 });
 
@@ -208,24 +304,21 @@ app.route("outdooradvertising", function (){
 
 app.route("crud", function (){
   mApplication.window.closeAll();
-
-  layoutView.showIn("#window", crud);
-  $("#window-crud").data("kendoWindow").center().open();
+layoutView.showIn("#contents", crud);
   
-  $("#window-crud").data("kendoWindow").bind("close",function(e){
-        e.sender.unbind("close",arguments.callee);
-  });
+  
 });
 
 
 
 app.route("category/missing", function (){
   mApplication.window.closeAll();
-  $('#content').css({'background' : "url('/system/images/border-green.png') no-repeat" });
+ // $('#content').css({'background' : "url('/system/images/border-green.png') no-repeat" });
     layoutView.showIn("#contents", missing);
 });
 
 app.route("category/:id", function(id) {
+  $('#content').css({'border' : "4px solid rgb(41, 172, 188)" });
    mApplication.window.closeAll();
    
 
@@ -238,7 +331,8 @@ layoutView.showIn("#contents", categoryContent);
 
 app.route("portfolio", function (){
   mApplication.window.closeAll();
-  $('#content').css({'background' : "url('/system/images/border-green.png') no-repeat" });
+  //$('#content').css({'background' : "url('/system/images/border-green.png') no-repeat" });
+  $('#content').css({'border' : "4px solid rgb(41, 172, 188) none" });
     layoutView.showIn("#contents", portfolio);
 
      $(document).ready(function () {
@@ -255,16 +349,23 @@ app.route("portfolio", function (){
 
 app.route("service/contacts", function (){
   mApplication.window.closeAll();
-  $('#content').css({'background' : "url('/system/images/border-fiolet.png') no-repeat" });
+ // $('#content').css({'background' : "url('/system/images/border-fiolet.png') no-repeat" });
     layoutView.showIn("#contents", contacts);
 });
 // end router
 
 //start application
-
  $(function(){
-    app.start();
-  });
+
+
+   app.start();
+    var height2 = $('#content').css("height");
+      console.debug($('#content').css("height"));
+
+ });
+
+    
+  
 </script>
 
 

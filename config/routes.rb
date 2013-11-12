@@ -1,8 +1,16 @@
 Sheavenanapa::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
-  resources :categories
+  resources :images
+  resources :categories do
+    resources :images
+  end
+  
   get 'crud' => 'content#crud'
+  get 'popup' => 'content#popup'
+  get 'edit_images' => 'content#edit_images'
+  get 'all' => 'categories#all'
+  get 'all_images' => 'images#all_images'
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action

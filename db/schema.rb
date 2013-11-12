@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(:version => 20131024082127) do
 
   create_table "categories", :force => true do |t|
     t.string   "title"
+    t.text     "name"
     t.text     "description"
     t.integer  "position"
     t.integer  "parent_id"

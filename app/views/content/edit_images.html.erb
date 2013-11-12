@@ -1,0 +1,152 @@
+<script id="rowTemplate" type="text/x-kendo-tmpl">
+              <tr>
+                <td class="photo">
+                       <img src="#= thumb #" alt="sdfsfd" />
+                </td>
+                <td class="details">
+                 <span class="title">#: title #</span>
+                 
+                </td>
+                <td class="employeeID">
+                   #: id #
+                </td>
+             </tr>
+            </script>
+
+<div id="grid">
+  <table id="images">
+    <tr>
+        
+       <th data-field="title"> Картинка </th>
+       <th data-field="thumb"> Название </th>
+       <th data-field="id"> id </th>
+
+    </tr>
+  </table>
+
+</div>
+
+
+<div id="right">
+<p> Редактирование </p>
+
+<dl>
+      <dt> Изменить заголовок картинки </dt>
+      <dd><input type="text" id="change-title"></dd>
+      
+
+      
+      <dd><button id="update-image">Обновить</dd>
+      <dd><button id="delete-image">Удалить</dd>
+ 
+ </dl>
+</div>
+
+<script>
+$(function(){
+
+  $('#footer').hide();
+
+$('#update-image').click(function(){
+  selectedImage.set("title", $("#change-title").val());
+
+  dataSource.sync();
+  dataSource.read(); 
+});
+
+$('#delete-image').click(function(){
+  dataSource.remove(selectedImage);
+
+
+dataSource.sync();
+dataSource.read(); 
+});
+
+
+
+ 
+ Mimage = kendo.data.Model.define({
+  id: "id"
+});
+ var ids;
+ var selectedImage;
+
+ dataSource = new kendo.data.DataSource({
+  transport: {
+    read: {
+      url: "/all_images.json"
+    },
+
+    update: {
+      url: function(obj){
+      
+        return "/images/"+obj.id+".json"
+      }, 
+      dataType: "json",
+      type: "PUT"
+    },
+    destroy: {
+      url: function(obj){
+        return "/images/"+obj.id+".json" 
+      },
+      dataType: "json",
+      type: "DELETE"
+    }
+  },
+  schema: {
+    model: Mimage
+  }
+});
+ 
+var grid = $("#images").kendoGrid({
+  dataSource: dataSource,
+  selectable: true,
+  rowTemplate: kendo.template($("#rowTemplate").html()),
+
+  change: function() {
+    ids = this.dataItem(this.select()).id;
+    
+    console.debug(ids);
+
+   
+    selectedImage = this.dataSource.get(ids);
+    
+   $("#change-title").val(selectedImage.get("title"));
+  }
+  
+
+
+});
+
+
+
+
+
+
+   
+});
+
+
+
+</script>
+
+
+<style>
+#grid{
+  font-size: 11px;
+}
+
+#right{
+  font-size: 10px;
+float: right;
+}
+
+#left{
+  font-size: 10px;
+float: left;
+}
+
+
+
+
+</style>
